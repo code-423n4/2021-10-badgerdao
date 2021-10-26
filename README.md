@@ -1,3 +1,5 @@
+# Contest prep
+
 ## ⭐️ Sponsor: Provide contest details
 
 Under "SPONSORS ADD INFO HERE" heading below, include the following:
@@ -12,10 +14,6 @@ Under "SPONSORS ADD INFO HERE" heading below, include the following:
 - [ ] Identify any areas of specific concern in reviewing the code
 - [ ] Add all of the code to this repo that you want reviewed
 - [ ] Create a PR to this repo with the above changes.
-
----
-
-# Contest prep
 
 ## ⭐️ Sponsor: Contest prep
 - [ ] Please have final versions of contracts and documentation added/updated in this repo **no less than 8 hours prior to contest start time.**
