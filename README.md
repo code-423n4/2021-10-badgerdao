@@ -4,19 +4,19 @@
 
 Under "SPONSORS ADD INFO HERE" heading below, include the following:
 
-- [ ] Name of each contract and:
-  - [ ] lines of code in each
-  - [ ] external contracts called in each
-  - [ ] libraries used in each
-- [ ] Describe any novel or unique curve logic or mathematical models implemented in the contracts
-- [ ] Does the token conform to the ERC-20 standard? In what specific ways does it differ?
-- [ ] Describe anything else that adds any special logic that makes your approach unique
-- [ ] Identify any areas of specific concern in reviewing the code
-- [ ] Add all of the code to this repo that you want reviewed
-- [ ] Create a PR to this repo with the above changes.
+- [x] Name of each contract and:
+  - [x] lines of code in each
+  - [x] external contracts called in each
+  - [x] libraries used in each
+- [x] Describe any novel or unique curve logic or mathematical models implemented in the contracts
+- [x] Does the token conform to the ERC-20 standard? In what specific ways does it differ?
+- [x] Describe anything else that adds any special logic that makes your approach unique
+- [x] Identify any areas of specific concern in reviewing the code
+- [x] Add all of the code to this repo that you want reviewed
+- [x] Create a PR to this repo with the above changes.
 
 ## ⭐️ Sponsor: Contest prep
-- [ ] Please have final versions of contracts and documentation added/updated in this repo **no less than 8 hours prior to contest start time.**
+- [x] Please have final versions of contracts and documentation added/updated in this repo **no less than 8 hours prior to contest start time.**
 - [ ] Optional: pre-record a high-level overview of your protocol (not just specific smart contract functions). This saves wardens a lot of time wading through documentation.
 
 ---
@@ -45,12 +45,11 @@ Introducing, **wibBTC**.
 * `balanceOf(account)` = sharesOf(account) * pricePerShare. As per typical rebasing tokens, each accounts' balance scales
 
 ## Admin Functionality
-* Governance 
-* Governance can set a new pendingGovernance address, which must `acceptPendingGovernance()`
-
+* Governance has the ability to manage sensitive operations
+    * Governance can set a new pendingGovernance address, which must `acceptPendingGovernance()`
 
 ## Risks
-* We introduce a trusted oracle on non-ETH chains. If it goes haywire and reports bad data, the pool could have 1000x the ribBTC, or 1/1000 the riBBTC, compared to iBBTC. What will happen in this case?
+* We introduce a trusted oracle on non-ETH chains. If it goes haywire and reports bad data, the pool could have 1000x the wibBTC, or 1/1000 the wibBTC, compared to iBBTC. What will happen in this case?
 * On Ethereum, if there's a pricePerShare bug in the ibBTC Core, what new considerations are introduced by the curve pool?
 * As with any rebaser we introduce precision loss / _dust_. Are there any concerns here?
 
@@ -59,9 +58,17 @@ Introducing, **wibBTC**.
     * Ensure oracle never goes down?
     * What should happen IF ibBTC is legitimately exploited... Is it better to keep this value at the new value or the pre-exploit expected value?
 
-## Contracts
-A live instance of the wrapper can be found here (pending). It's using a proxy + logic split for upgradeability. 
-There is a test curve pool vs sbtc on Ethereum (pending), and a test pool vs ren on Polygon.
+* This contract interacts with both the underlying ibBTC contracts and is used in a Curve pool.
+
+## Live Contracts
+* A live instance of the wrapper can be found [here](https://etherscan.io/token/0x8751d4196027d4e6da63716fa7786b5174f04c15). 
+    * (It's using a proxy + logic split for upgradeability during test phase)
+* There is a curve pool vs sbtc on Ethereum [here](https://curve.fi/factory/60).
+
+## Contract Details
+* WrappedIbbtc.sol (154 lines)
+* WrappedIbbtcEth.sol (162 lines)
+
 
 # UX Considerations
 Users need to convert ibBTC to wibBTC before depositing into curve pool. They then need to deposit values into the curve pool denominated in balances rather than shares.
@@ -72,13 +79,14 @@ Users need to convert ibBTC to wibBTC before depositing into curve pool. They th
 5. Does it use an oracle?
     * Yes, this is a custom ibBTC pricePerShare oracle in development by chainlink.
 6. Does the token conform to the ERC20 standard?
-    * Yes, with custom minting & burning functions. It's based on the OZ ERC20Upgradeable contract.
+    * Yes, with custom minting & burning functions. It's based on a lightly modified OZ ERC20Upgradeable contract. The `transfer`, `transferFrom`, and `balanceOf` functions are overridden to take into consideration the rebasing mechanics. The underlying OZ contract was modified to expose the `_balance` mapping to inheriting contracts (private -> internal).
 12. Is it multichain?
     * Yes in the sense that it reads oracle data from other chains when not used on ETH mainnet.
 13. Does it use a sidechain?
     * It will exist on sidechains as per above
 13a. If yes, is the sidechain evm-compatible?
     * Yes, it will only be present on EVM sidechains
+
 
 # Basic Sample Hardhat Project
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
