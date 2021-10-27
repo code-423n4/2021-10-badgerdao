@@ -31,17 +31,20 @@ Under "SPONSORS ADD INFO HERE" heading below, include the following:
 - Ends October 30, 2021 23:59 UTC
 
 # ibBTC Rebasing Wrapper
-When ibBTC is placed in a curve BTC metapool, the value of ibBTC tokens will deviate relative to the value of the Curve LP tokens. This is due to the yearn vault-like price per share mechanic of ibBTC. StableSwap invariant means you only get low or even reasonable slippage when the balances of both coins are very close. The variance between value may perpetually increase as ibBTC increases in value.
+![](./images/ibbtc-pool.png)
 
-While we develop a custom pool, this wrapper allows for the value of each ibBTC coin in the pool to remain equal to the underlying tokenized BTC collateral so that the metapool can function as intended.
+When [Interest-Bearing Bitcoin](https://github.com/defidollar/ibbtc) (ibBTC) is used with the Curve sBTC metapool, the value of ibBTC tokens will deviate relative to the value of the Curve LP tokens. This is due to the yearn vault-like price per share mechanic of ibBTC. StableSwap invariant means you only get low or even reasonable slippage when the balances of both coins are very close. The variance between value may perpetually increase as ibBTC increases in value.
+
+While we intend to develop a custom pool, in the meantime this rebasing wrapper allows for the value of each ibBTC coin in the pool to remain equal to the underlying tokenized BTC collateral so that the metapool can function as intended.
 
 Introducing, **wibBTC**.
 
 ## How it works
-* Users deposit ibBTC into the contract and are minted shares at 1-1 to the token value deposited. This value is tracked in `sharesOf(account)`
+* Users deposit ibBTC into the wibBTC contract and are minted shares at 1-1 to the token value deposited. This value is tracked in `sharesOf(account)`
 * `totalShares()` is the number of ibBTC tokens in the wrapper
-* `totalSupply()` is ibBTC pricePerShare * totalShares. The total supply increases relative to the number of shares as the pricePerShare increases. This means 1 unit of wibBTC = 1 tokenized BTC in value.
+* `totalSupply()` is ibBTC pricePerShare * totalShares. The total supply increases relative to the number of shares as the pricePerShare increases. This means `1 wibBTC ~= 1 tokenized BTC` in value.
     * ibBTC pricePerShare is read directly from the ibBTC Core contract on Ethereum, and is read from an oracle on other chains.
+    * All balances rise proportionally as totalSupply increases
 * `balanceOf(account)` = sharesOf(account) * pricePerShare. As per typical rebasing tokens, each accounts' balance scales
 
 ## Admin Functionality
